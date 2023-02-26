@@ -8,7 +8,7 @@ export default () => ({
   },
   jwt: {
     jwtSecret: process.env.JWT_SECRET || 'secret',
-    jwtExpiresInt: parseInt(process.env.JWT_EXPIRES_IN) || 3600,
+    jwtExpiresInt: parseInt(process.env.JWT_EXPIRES_IN) || 36000,
   },
   port: parseInt(process.env.PORT) || 3000,
   saltRounds: parseInt(process.env.SALT_ROUNDS),
