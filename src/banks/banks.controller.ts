@@ -7,10 +7,15 @@ import {
   Patch,
   Post,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { PayloadDto } from 'src/auth/dto/payload.dto';
 import { User } from 'src/decorators/user.decorator';
 import { BanksService } from './banks.service';
@@ -18,13 +23,16 @@ import { CreateBankDto } from './dto/create.dto';
 import { UpdateBankDto } from './dto/update.dto';
 import { Bank } from './entity/bank.entity';
 
+@ApiTags('banks')
 @Controller('banks')
 export class BanksController {
   constructor(private banksService: BanksService) {}
 
+  @ApiUnauthorizedResponse()
+  @ApiOkResponse({ type: Bank })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
-  @UsePipes(new ValidationPipe())
   create(
     @User() user: PayloadDto,
     @Body() createBankDto: CreateBankDto,
@@ -32,9 +40,11 @@ export class BanksController {
     return this.banksService.create(user.userId, createBankDto);
   }
 
+  @ApiUnauthorizedResponse()
+  @ApiResponse({ status: 200, description: 'Return `{success: true}`' })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Patch(':bankId')
-  @UsePipes(new ValidationPipe())
   update(
     @Param('bankId') bankId: number,
     @Body() updateBankDto: UpdateBankDto,
@@ -42,18 +52,27 @@ export class BanksController {
     return this.banksService.update(bankId, updateBankDto);
   }
 
+  @ApiUnauthorizedResponse()
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: [Bank] })
   @UseGuards(AuthGuard('jwt'))
   @Get('all')
   findAll(@User() user: PayloadDto): Promise<Bank[]> {
     return this.banksService.findAll(user.userId);
   }
 
+  @ApiUnauthorizedResponse()
+  @ApiOkResponse({ type: Bank })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get(':bankId')
   findOne(@Param('bankId') bankId: number): Promise<Bank> {
     return this.banksService.findOne(bankId);
   }
 
+  @ApiUnauthorizedResponse()
+  @ApiResponse({ status: 200, description: 'Return `{success: true}`' })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':bankId')
   delete(@Param('bankId') bankId: number): Promise<{ success: boolean }> {

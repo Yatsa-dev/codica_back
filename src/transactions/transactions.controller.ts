@@ -1,14 +1,13 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { Delete, Param, Query } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { PayloadDto } from 'src/auth/dto/payload.dto';
 import { User } from 'src/decorators/user.decorator';
 import { CreateTransactionDto } from './dto/create.dto';
@@ -16,13 +15,16 @@ import { PaginationParamsDto } from './dto/paginations.dto';
 import { Transaction } from './entity/transaction.entity';
 import { TransactionsService } from './transactions.service';
 
+@ApiTags('transactions')
 @Controller('transactions')
 export class TransactionsController {
   constructor(private transactionsService: TransactionsService) {}
 
+  @ApiUnauthorizedResponse()
+  @ApiOkResponse({ type: Transaction })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post('webhook')
-  @UsePipes(new ValidationPipe())
   create(
     @User() user: PayloadDto,
     @Body() createTransactionDto: CreateTransactionDto,
@@ -30,8 +32,10 @@ export class TransactionsController {
     return this.transactionsService.create(user.userId, createTransactionDto);
   }
 
+  @ApiUnauthorizedResponse()
+  @ApiOkResponse({ type: [Transaction] })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @UsePipes(new ValidationPipe())
   @Get('all')
   find(
     @User() user: PayloadDto,
@@ -40,6 +44,9 @@ export class TransactionsController {
     return this.transactionsService.findAll(user.userId, offset, limit);
   }
 
+  @ApiUnauthorizedResponse()
+  @ApiResponse({ status: 200, description: 'Return `{success: true}`' })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':transactionId')
   delete(

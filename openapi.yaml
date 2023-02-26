@@ -1,0 +1,526 @@
+openapi: 3.0.0
+paths:
+  /auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponseDto'
+      tags:
+        - auth
+  /users/signup:
+    post:
+      operationId: UsersController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags:
+        - users
+  /users:
+    get:
+      operationId: UsersController_finAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: ''
+      tags:
+        - users
+      security:
+        - bearer: []
+  /transactions/webhook:
+    post:
+      operationId: TransactionsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransactionDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '401':
+          description: ''
+      tags:
+        - transactions
+      security:
+        - bearer: []
+  /transactions/all:
+    get:
+      operationId: TransactionsController_find
+      parameters:
+        - name: offset
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: limit
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        '401':
+          description: ''
+      tags:
+        - transactions
+      security:
+        - bearer: []
+  /transactions/{transactionId}:
+    delete:
+      operationId: TransactionsController_delete
+      parameters:
+        - name: transactionId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: 'Return `{success: true}`'
+        '401':
+          description: ''
+      tags:
+        - transactions
+      security:
+        - bearer: []
+  /banks/create:
+    post:
+      operationId: BanksController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBankDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bank'
+        '401':
+          description: ''
+      tags:
+        - banks
+      security:
+        - bearer: []
+  /banks/{bankId}:
+    patch:
+      operationId: BanksController_update
+      parameters:
+        - name: bankId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBankDto'
+      responses:
+        '200':
+          description: 'Return `{success: true}`'
+        '401':
+          description: ''
+      tags:
+        - banks
+      security:
+        - bearer: []
+    get:
+      operationId: BanksController_findOne
+      parameters:
+        - name: bankId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bank'
+        '401':
+          description: ''
+      tags:
+        - banks
+      security:
+        - bearer: []
+    delete:
+      operationId: BanksController_delete
+      parameters:
+        - name: bankId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: 'Return `{success: true}`'
+        '401':
+          description: ''
+      tags:
+        - banks
+      security:
+        - bearer: []
+  /banks/all:
+    get:
+      operationId: BanksController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bank'
+        '401':
+          description: ''
+      tags:
+        - banks
+      security:
+        - bearer: []
+  /categories/create:
+    post:
+      operationId: CategoriesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '401':
+          description: ''
+      tags:
+        - categories
+      security:
+        - bearer: []
+  /categories/{categoryId}:
+    patch:
+      operationId: CategoriesController_update
+      parameters:
+        - name: categoryId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryDto'
+      responses:
+        '200':
+          description: 'Return `{success: true}`'
+        '401':
+          description: ''
+      tags:
+        - categories
+      security:
+        - bearer: []
+    get:
+      operationId: CategoriesController_findOne
+      parameters:
+        - name: categoryId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '401':
+          description: ''
+      tags:
+        - categories
+      security:
+        - bearer: []
+    delete:
+      operationId: CategoriesController_delete
+      parameters:
+        - name: categoryId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: 'Return `{success: true}`'
+        '401':
+          description: ''
+      tags:
+        - categories
+      security:
+        - bearer: []
+  /categories/all:
+    get:
+      operationId: CategoriesController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '401':
+          description: ''
+      tags:
+        - categories
+      security:
+        - bearer: []
+  /stats:
+    get:
+      operationId: StatisticsController_getStatistics
+      parameters:
+        - name: from
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: to
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: categoryIds
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: number
+      responses:
+        '200':
+          description: 'Return `{ category: value, category: value }`'
+        '401':
+          description: ''
+      tags:
+        - stats
+      security:
+        - bearer: []
+info:
+  title: Codica_back
+  description: The Codica Back API description
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    LoginDto:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    LoginResponseDto:
+      type: object
+      properties:
+        access_token:
+          type: string
+        expires_at:
+          type: string
+      required:
+        - access_token
+        - expires_at
+    CreateUserDto:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+      required:
+        - username
+        - password
+        - email
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+      required:
+        - id
+        - username
+        - password
+        - email
+    CreateTransactionDto:
+      type: object
+      properties:
+        amount:
+          type: number
+        type:
+          type: string
+        categoryIds:
+          type: array
+          items:
+            type: number
+        bank:
+          type: object
+        createdAt:
+          type: string
+        user:
+          type: number
+      required:
+        - amount
+        - type
+        - categoryIds
+        - bank
+    Bank:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        balance:
+          type: number
+        user:
+          type: number
+      required:
+        - id
+        - name
+        - balance
+        - user
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: number
+        amount:
+          type: number
+        type:
+          type: string
+        createdAt:
+          type: string
+        bank:
+          $ref: '#/components/schemas/Bank'
+        user:
+          type: number
+      required:
+        - id
+        - amount
+        - type
+        - createdAt
+        - bank
+        - user
+    CreateBankDto:
+      type: object
+      properties:
+        name:
+          type: string
+        user:
+          type: number
+      required:
+        - name
+    UpdateBankDto:
+      type: object
+      properties:
+        name:
+          type: string
+    CreateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    Category:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+      required:
+        - id
+        - name
+    UpdateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
