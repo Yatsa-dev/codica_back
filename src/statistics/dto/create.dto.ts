@@ -3,9 +3,9 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 export class CreateStatisticDto {
   @IsNumber()
   @IsNotEmpty()
-  transaction: number;
+  transaction: any;
 
   @IsNumber()
   @IsNotEmpty()
-  category: number;
+  category: any;
 }

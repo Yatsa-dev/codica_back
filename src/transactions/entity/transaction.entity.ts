@@ -20,12 +20,12 @@ export class Transaction {
   @Column({ type: 'enum', enum: [PROFITABLE, CONSUMABLE] })
   type: string;
 
-  @Column({ type: 'timestamp' })
-  createdAt: Date;
+  @Column()
+  createdAt: string;
 
   @ManyToOne(() => Bank, { nullable: false, eager: true })
   @JoinColumn()
-  bank: number;
+  bank: Bank;
 
   @ManyToOne(() => User, { nullable: false })
   @JoinColumn()

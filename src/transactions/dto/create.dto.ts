@@ -21,11 +21,11 @@ export class CreateTransactionDto {
 
   @IsNotEmpty()
   @IsNumber()
-  bank: number;
+  bank: any;
 
   @IsOptional()
   @IsString()
-  createdAt?: Date;
+  createdAt?: string;
 
   @IsOptional()
   @IsNumber()

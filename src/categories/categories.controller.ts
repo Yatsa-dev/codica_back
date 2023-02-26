@@ -14,6 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create.dto';
 import { UpdateCategoryDto } from './dto/update.dto';
+import { Category } from './entity/category.entity';
 
 @Controller('categories')
 export class CategoriesController {
@@ -22,7 +23,7 @@ export class CategoriesController {
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
   @UsePipes(new ValidationPipe())
-  create(@Body() createCategoryDto: CreateCategoryDto) {
+  create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     return this.categoriesService.create(createCategoryDto);
   }
 
@@ -32,25 +33,27 @@ export class CategoriesController {
   update(
     @Param('categoryId') categoryId: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
-  ) {
+  ): Promise<{ success: boolean }> {
     return this.categoriesService.update(categoryId, updateCategoryDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('all')
-  findAll() {
+  findAll(): Promise<Category[]> {
     return this.categoriesService.findAll();
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':categoryId')
-  findOne(@Param('categoryId') categoryId: number) {
+  findOne(@Param('categoryId') categoryId: number): Promise<Category> {
     return this.categoriesService.findOne(categoryId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':categoryId')
-  delete(@Param('categoryId') categoryId: number) {
+  delete(
+    @Param('categoryId') categoryId: number,
+  ): Promise<{ success: boolean }> {
     return this.categoriesService.delete(categoryId);
   }
 }

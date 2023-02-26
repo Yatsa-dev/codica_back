@@ -2,7 +2,6 @@ import { omit } from 'lodash';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BanksService } from 'src/banks/banks.service';
-import { CategoriesService } from 'src/categories/categories.service';
 import { USER_NOT_FOUND } from 'src/users/users.constanst';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
@@ -10,15 +9,17 @@ import { CreateTransactionDto } from './dto/create.dto';
 import { Transaction } from './entity/transaction.entity';
 import {
   CONSUMABLE,
+  MOMENT,
   PROFITABLE,
   TRANSACTION_NOT_FOUND,
 } from './transactions.constants';
-import { QueryFilter } from './dto/filter.dto';
 import { StatisticsService } from 'src/statistics/statistics.service';
+import { Inject } from '@nestjs/common/decorators';
 
 @Injectable()
 export class TransactionsService {
   constructor(
+    @Inject(MOMENT) private moment,
     @InjectRepository(Transaction)
     private transactionsRepository: Repository<Transaction>,
     private usersServise: UsersService,
@@ -26,13 +27,16 @@ export class TransactionsService {
     private statisticsService: StatisticsService,
   ) {}
 
-  async create(userId: number, createTransactionDto: CreateTransactionDto) {
+  async create(
+    userId: number,
+    createTransactionDto: CreateTransactionDto,
+  ): Promise<Transaction> {
     const user = await this.usersServise.findById(userId);
     if (!user) {
       throw new NotFoundException(USER_NOT_FOUND);
     }
     createTransactionDto.user = user.id;
-    createTransactionDto.createdAt = new Date();
+    createTransactionDto.createdAt = this.moment.utc().format('YYYY-MM-DD');
 
     const transaction = await this.transactionsRepository.save(
       createTransactionDto,
@@ -63,7 +67,7 @@ export class TransactionsService {
     return transaction;
   }
 
-  async delete(transactionId: number) {
+  async delete(transactionId: number): Promise<{ success: boolean }> {
     const transaction = await this.findOne(transactionId);
 
     if (!transaction) {
@@ -85,16 +89,22 @@ export class TransactionsService {
         break;
     }
     await this.transactionsRepository.delete({ id: transaction.id });
+
+    return { success: true };
   }
 
-  async findOne(transactionId: number) {
+  async findOne(transactionId: number): Promise<Transaction> {
     const transaction = await this.transactionsRepository.findOneBy({
       id: transactionId,
     });
     return omit(transaction, ['bank.balance', 'bank.name']);
   }
 
-  async findAll(userId: number, offset?: number, limit?: number) {
+  async findAll(
+    userId: number,
+    offset?: number,
+    limit?: number,
+  ): Promise<Transaction[]> {
     const transactions = await this.transactionsRepository.find({
       where: { user: userId },
       order: {

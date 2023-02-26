@@ -12,26 +12,31 @@ export class CategoriesService {
     private categoriesRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     return this.categoriesRepository.save(createCategoryDto);
   }
 
-  async update(categoryId: number, updateCategoryDto: UpdateCategoryDto) {
-    return this.categoriesRepository.update(
+  async update(
+    categoryId: number,
+    updateCategoryDto: UpdateCategoryDto,
+  ): Promise<{ success: boolean }> {
+    await this.categoriesRepository.update(
       { id: categoryId },
       updateCategoryDto,
     );
+    return { success: true };
   }
 
-  async findOne(categoryId: number) {
+  async findOne(categoryId: number): Promise<Category> {
     return this.categoriesRepository.findOneBy({ id: categoryId });
   }
 
-  async findAll() {
+  async findAll(): Promise<Category[]> {
     return this.categoriesRepository.find();
   }
 
-  async delete(categoryId: number) {
-    return this.categoriesRepository.delete({ id: categoryId });
+  async delete(categoryId: number): Promise<{ success: boolean }> {
+    await this.categoriesRepository.delete({ id: categoryId });
+    return { success: true };
   }
 }

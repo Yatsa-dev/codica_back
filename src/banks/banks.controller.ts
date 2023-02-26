@@ -16,6 +16,7 @@ import { User } from 'src/decorators/user.decorator';
 import { BanksService } from './banks.service';
 import { CreateBankDto } from './dto/create.dto';
 import { UpdateBankDto } from './dto/update.dto';
+import { Bank } from './entity/bank.entity';
 
 @Controller('banks')
 export class BanksController {
@@ -24,7 +25,10 @@ export class BanksController {
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
   @UsePipes(new ValidationPipe())
-  create(@User() user: PayloadDto, @Body() createBankDto: CreateBankDto) {
+  create(
+    @User() user: PayloadDto,
+    @Body() createBankDto: CreateBankDto,
+  ): Promise<Bank> {
     return this.banksService.create(user.userId, createBankDto);
   }
 
@@ -34,25 +38,25 @@ export class BanksController {
   update(
     @Param('bankId') bankId: number,
     @Body() updateBankDto: UpdateBankDto,
-  ) {
+  ): Promise<{ success: boolean }> {
     return this.banksService.update(bankId, updateBankDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('all')
-  findAll(@User() user: PayloadDto) {
+  findAll(@User() user: PayloadDto): Promise<Bank[]> {
     return this.banksService.findAll(user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':bankId')
-  findOne(@Param('bankId') bankId: number) {
+  findOne(@Param('bankId') bankId: number): Promise<Bank> {
     return this.banksService.findOne(bankId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':bankId')
-  delete(@Param('bankId') bankId: number) {
+  delete(@Param('bankId') bankId: number): Promise<{ success: boolean }> {
     return this.banksService.delete(bankId);
   }
 }

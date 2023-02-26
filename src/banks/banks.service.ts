@@ -11,32 +11,49 @@ export class BanksService {
     @InjectRepository(Bank) private banksRepository: Repository<Bank>,
   ) {}
 
-  async create(userId: number, createBankDto: CreateBankDto) {
+  async create(userId: number, createBankDto: CreateBankDto): Promise<Bank> {
     createBankDto.user = userId;
     return this.banksRepository.save(createBankDto);
   }
 
-  async update(bankId: number, updateBankDto: UpdateBankDto) {
-    return this.banksRepository.update({ id: bankId }, updateBankDto);
+  async update(
+    bankId: number,
+    updateBankDto: UpdateBankDto,
+  ): Promise<{ success: boolean }> {
+    await this.banksRepository.update({ id: bankId }, updateBankDto);
+
+    return { success: true };
   }
 
-  async findOne(bankId: number) {
+  async findOne(bankId: number): Promise<Bank> {
     return this.banksRepository.findOneBy({ id: bankId });
   }
 
-  async findAll(userId: number) {
+  async findAll(userId: number): Promise<Bank[]> {
     return this.banksRepository.findBy({ user: userId });
   }
 
-  async delete(bankId: number) {
-    return this.banksRepository.delete({ id: bankId });
+  async delete(bankId: number): Promise<{ success: boolean }> {
+    await this.banksRepository.delete({ id: bankId });
+
+    return { success: true };
   }
 
-  async incrementBalance(bankId: number, value: number) {
-    return this.banksRepository.increment({ id: bankId }, 'balance', value);
+  async incrementBalance(
+    bankId: number,
+    value: number,
+  ): Promise<{ success: boolean }> {
+    await this.banksRepository.increment({ id: bankId }, 'balance', value);
+
+    return { success: true };
   }
 
-  async decrementBalance(bankId: number, value: number) {
-    return this.banksRepository.decrement({ id: bankId }, 'balance', value);
+  async decrementBalance(
+    bankId: number,
+    value: number,
+  ): Promise<{ success: boolean }> {
+    await this.banksRepository.decrement({ id: bankId }, 'balance', value);
+
+    return { success: true };
   }
 }

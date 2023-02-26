@@ -15,7 +15,7 @@ export class UsersService {
     @Inject(BCRYPT) private bcrypt,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const isExist = await this.userRepository.findOneBy({
       username: createUserDto.username,
     });
@@ -33,15 +33,15 @@ export class UsersService {
     return user;
   }
 
-  async findByUserName(username: string) {
+  async findByUserName(username: string): Promise<User> {
     return this.userRepository.findOneBy({ username });
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<User> {
     return this.userRepository.findOneBy({ id });
   }
 
-  async find() {
+  async find(): Promise<User[]> {
     return this.userRepository.find();
   }
 }

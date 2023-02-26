@@ -1,14 +1,17 @@
-import { IsOptional, IsNumber, IsArray, IsDate } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsOptional, IsNumber, IsArray, IsString } from 'class-validator';
 export class QueryFilter {
-  @IsDate()
+  @IsString()
   @IsOptional()
-  from?: Date;
+  from?: string;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  to?: Date;
+  to?: string;
 
-  @IsNumber()
   @IsOptional()
-  categoryIds?: number;
+  @Type(() => IsNumber)
+  @IsArray()
+  @Transform(({ value }) => value.toString().split(',').map(Number))
+  categoryIds?: number[];
 }

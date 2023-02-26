@@ -16,10 +16,10 @@ import { StatisticsService } from './statistics.service';
 export class StatisticsController {
   constructor(private statisticsService: StatisticsService) {}
 
-  // @UseGuards(AuthGuard('jwt'))
-  // @UsePipes(new ValidationPipe())
-  // @Get('statistics')
-  // getStatistics(@User() user: PayloadDto, @Query() query: QueryFilter) {
-  //   return this.statisticsService.getStatistics(user.userId, query);
-  // }
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @Get()
+  getStatistics(@User() user: PayloadDto, @Query() query: QueryFilter) {
+    return this.statisticsService.getStatistics(user.userId, query);
+  }
 }

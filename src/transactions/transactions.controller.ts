@@ -12,7 +12,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { PayloadDto } from 'src/auth/dto/payload.dto';
 import { User } from 'src/decorators/user.decorator';
 import { CreateTransactionDto } from './dto/create.dto';
-import { PaginationParams } from './dto/paginations.dto';
+import { PaginationParamsDto } from './dto/paginations.dto';
+import { Transaction } from './entity/transaction.entity';
 import { TransactionsService } from './transactions.service';
 
 @Controller('transactions')
@@ -25,20 +26,25 @@ export class TransactionsController {
   create(
     @User() user: PayloadDto,
     @Body() createTransactionDto: CreateTransactionDto,
-  ) {
+  ): Promise<Transaction> {
     return this.transactionsService.create(user.userId, createTransactionDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   @Get('all')
-  find(@User() user: PayloadDto, @Query() { offset, limit }: PaginationParams) {
+  find(
+    @User() user: PayloadDto,
+    @Query() { offset, limit }: PaginationParamsDto,
+  ): Promise<Transaction[]> {
     return this.transactionsService.findAll(user.userId, offset, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':transactionId')
-  delete(@Param('transactionId') transactionId: number) {
+  delete(
+    @Param('transactionId') transactionId: number,
+  ): Promise<{ success: boolean }> {
     return this.transactionsService.delete(transactionId);
   }
 }

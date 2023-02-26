@@ -7,11 +7,18 @@ export class Statistic {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Transaction, { nullable: false })
+  @ManyToOne(() => Transaction, {
+    onDelete: 'CASCADE',
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn()
-  transaction: number;
+  transaction: Transaction;
 
-  @ManyToOne(() => Category, { nullable: false })
+  @ManyToOne(() => Category, {
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn()
-  category: number;
+  category: Category;
 }
