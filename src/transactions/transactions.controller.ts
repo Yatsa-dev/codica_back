@@ -8,8 +8,8 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { PayloadDto } from 'src/auth/dto/payload.dto';
-import { User } from 'src/decorators/user.decorator';
+import { PayloadDto } from '../auth/dto/payload.dto';
+import { User } from '../decorators/user.decorator';
 import { CreateTransactionDto } from './dto/create.dto';
 import { PaginationParamsDto } from './dto/paginations.dto';
 import { Transaction } from './entity/transaction.entity';

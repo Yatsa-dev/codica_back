@@ -1,4 +1,4 @@
-import { User } from 'src/users/entity/users.entity';
+import { User } from '../../users/entity/users.entity';
 import {
   PrimaryGeneratedColumn,
   Column,
@@ -18,7 +18,10 @@ export class Bank {
   @Column({ default: 0 })
   balance: number;
 
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => User, {
+    nullable: false,
+    // createForeignKeyConstraints: false,
+  })
   @JoinColumn()
   user: number;
 }

@@ -1,15 +1,13 @@
+import { In, Repository } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFilter } from 'src/transactions/dto/filter.dto';
-import { Transaction } from 'src/transactions/entity/transaction.entity';
-import {
-  CONSUMABLE,
-  PROFITABLE,
-} from 'src/transactions/transactions.constants';
-import { In, Repository } from 'typeorm';
+import { QueryFilter } from '../transactions/dto/filter.dto';
+import { Transaction } from '../transactions/entity/transaction.entity';
+import { CONSUMABLE, PROFITABLE } from '../transactions/transactions.constants';
 import { CreateStatisticDto } from './dto/create.dto';
 import { Statistic } from './entity/statistics.entity';
 import { MOMENT } from './statistics.constants';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class StatisticsService {
@@ -19,6 +17,7 @@ export class StatisticsService {
     @InjectRepository(Transaction)
     private transactionsRepository: Repository<Transaction>,
     @Inject(MOMENT) private moment,
+    private categoriesService: CategoriesService,
   ) {}
 
   async create(createStatisticDto: CreateStatisticDto): Promise<Statistic> {
@@ -35,12 +34,17 @@ export class StatisticsService {
     });
 
     const transactionsIds = transactions.map((item) => item.id);
+
+    const categoriesIds = await (
+      await this.categoriesService.findAll()
+    ).map((item) => item.id);
+
     const stats = await this.statisticsRepository.find({
       where: [{ transaction: In(transactionsIds) }],
     });
 
     const result = [];
-    for (const id of query.categoryIds) {
+    for (const id of query.categoryIds ? query.categoryIds : categoriesIds) {
       stats.filter((item) => {
         if (item.category.id === id) result.push(item);
       });

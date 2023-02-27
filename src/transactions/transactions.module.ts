@@ -1,9 +1,9 @@
 import * as moment from 'moment';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BanksModule } from 'src/banks/banks.module';
-import { StatisticsModule } from 'src/statistics/statistics.module';
-import { UsersModule } from 'src/users/users.module';
+import { BanksModule } from '../banks/banks.module';
+import { StatisticsModule } from '../statistics/statistics.module';
+import { UsersModule } from '../users/users.module';
 import { Transaction } from './entity/transaction.entity';
 import { MOMENT } from './transactions.constants';
 import { TransactionsController } from './transactions.controller';

@@ -56,6 +56,15 @@ Run this command in the project directory to start:
 
 You server runs on [http://localhost:3000](http://localhost:3000)
 
+## About Runing Tests
+
+### for runing tests your need to disabled createForeignKeyConstraints in all entities where there is a relations
+
+```
+   used only for runing tests, if application in prod or work on local machine,
+  'createForeignKeyConstraints' should to be true
+```
+
 ## Database schema
 
 ![DB_diagram](./docs/schema.codica.png)

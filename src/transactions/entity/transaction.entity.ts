@@ -1,5 +1,5 @@
-import { Bank } from 'src/banks/entity/bank.entity';
-import { User } from 'src/users/entity/users.entity';
+import { Bank } from '../../banks/entity/bank.entity';
+import { User } from '../../users/entity/users.entity';
 import {
   PrimaryGeneratedColumn,
   Column,
@@ -17,17 +17,24 @@ export class Transaction {
   @Column()
   amount: number;
 
-  @Column({ type: 'enum', enum: [PROFITABLE, CONSUMABLE] })
+  @Column({ type: 'simple-enum', enum: [PROFITABLE, CONSUMABLE] })
   type: string;
 
   @Column()
   createdAt: string;
 
-  @ManyToOne(() => Bank, { nullable: false, eager: true })
+  @ManyToOne(() => Bank, {
+    nullable: false,
+    eager: true,
+    // createForeignKeyConstraints: false,
+  })
   @JoinColumn()
   bank: Bank;
 
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => User, {
+    nullable: false,
+    // createForeignKeyConstraints: false,
+  })
   @JoinColumn()
   user: number;
 }

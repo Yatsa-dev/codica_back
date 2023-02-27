@@ -1,6 +1,6 @@
-import { Transaction } from 'src/transactions/entity/transaction.entity';
-import { Category } from 'src/categories/entity/category.entity';
 import { PrimaryGeneratedColumn, Entity, ManyToOne, JoinColumn } from 'typeorm';
+import { Transaction } from '../../transactions/entity/transaction.entity';
+import { Category } from '../../categories/entity/category.entity';
 
 @Entity()
 export class Statistic {
@@ -11,6 +11,7 @@ export class Statistic {
     onDelete: 'CASCADE',
     nullable: false,
     eager: true,
+    // createForeignKeyConstraints: false,
   })
   @JoinColumn()
   transaction: Transaction;
@@ -18,6 +19,7 @@ export class Statistic {
   @ManyToOne(() => Category, {
     nullable: false,
     eager: true,
+    // createForeignKeyConstraints: false,
   })
   @JoinColumn()
   category: Category;

@@ -1,10 +1,10 @@
 import { omit } from 'lodash';
+import { Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BanksService } from 'src/banks/banks.service';
-import { USER_NOT_FOUND } from 'src/users/users.constanst';
-import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
+import { BanksService } from '../banks/banks.service';
+import { USER_NOT_FOUND } from '../users/users.constanst';
+import { UsersService } from '../users/users.service';
 import { CreateTransactionDto } from './dto/create.dto';
 import { Transaction } from './entity/transaction.entity';
 import {
@@ -13,7 +13,7 @@ import {
   PROFITABLE,
   TRANSACTION_NOT_FOUND,
 } from './transactions.constants';
-import { StatisticsService } from 'src/statistics/statistics.service';
+import { StatisticsService } from '../statistics/statistics.service';
 import { Inject } from '@nestjs/common/decorators';
 
 @Injectable()
@@ -97,7 +97,7 @@ export class TransactionsService {
     const transaction = await this.transactionsRepository.findOneBy({
       id: transactionId,
     });
-    return omit(transaction, ['bank.balance', 'bank.name']);
+    return transaction;
   }
 
   async findAll(

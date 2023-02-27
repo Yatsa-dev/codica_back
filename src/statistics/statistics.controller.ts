@@ -6,9 +6,9 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { PayloadDto } from 'src/auth/dto/payload.dto';
-import { User } from 'src/decorators/user.decorator';
-import { QueryFilter } from 'src/transactions/dto/filter.dto';
+import { PayloadDto } from '../auth/dto/payload.dto';
+import { User } from '../decorators/user.decorator';
+import { QueryFilter } from '../transactions/dto/filter.dto';
 import { StatisticsService } from './statistics.service';
 
 @ApiTags('stats')

@@ -16,8 +16,8 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { PayloadDto } from 'src/auth/dto/payload.dto';
-import { User } from 'src/decorators/user.decorator';
+import { PayloadDto } from '../auth/dto/payload.dto';
+import { User } from '../decorators/user.decorator';
 import { BanksService } from './banks.service';
 import { CreateBankDto } from './dto/create.dto';
 import { UpdateBankDto } from './dto/update.dto';
