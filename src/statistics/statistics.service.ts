@@ -57,7 +57,7 @@ export class StatisticsService {
       return [...acc, { [item.category.name]: amount }];
     }, []);
 
-    const totals: any = {};
+    const totals = {};
     modifiedResult.forEach((item: { category: string; value: number }) => {
       const array = Object.entries(item);
       if (totals[array[0][0]]) {

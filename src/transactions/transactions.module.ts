@@ -2,7 +2,6 @@ import * as moment from 'moment';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BanksModule } from 'src/banks/banks.module';
-import { CategoriesModule } from 'src/categories/categories.module';
 import { StatisticsModule } from 'src/statistics/statistics.module';
 import { UsersModule } from 'src/users/users.module';
 import { Transaction } from './entity/transaction.entity';
@@ -15,7 +14,6 @@ import { TransactionsService } from './transactions.service';
     TypeOrmModule.forFeature([Transaction]),
     UsersModule,
     BanksModule,
-    CategoriesModule,
     StatisticsModule,
   ],
   providers: [
